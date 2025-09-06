@@ -4,20 +4,9 @@ with cte as(
         DATE(TO_TIMESTAMP(STARTED_AT)) AS DATE_STARTED_AT,
         HOUR(TO_TIMESTAMP(STARTED_AT)) AS HOUR_STARTED_AT,
 
-        CASE 
-        WHEN DAYNAME(TO_TIMESTAMP(STARTED_AT)) in ('Sat','Sun')
-        THEN 'WEEKEND'
-        ELSE 'BUSINESSDAY'
-        END AS DAY_TYPE,
+        {{get_day('STARTED_AT')}} AS DAY_TYPE,
 
-        CASE when month(TO_TIMESTAMP(STARTED_AT)) in (12,1,2)
-        THEN 'WINTER'
-        when month(TO_TIMESTAMP(STARTED_AT)) in (3,4,5)
-        THEN 'SPRING'
-        when month(TO_TIMESTAMP(STARTED_AT)) in (6,7,8)
-        THEN 'SUMMER'
-        ELSE 'AUTUMN'
-        END AS STATION_OF_YEAR
+        {{get_season('STARTED_AT')}}
 
     from 
     {{ source('demo','bike')}}
