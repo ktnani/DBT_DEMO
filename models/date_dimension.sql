@@ -9,7 +9,7 @@ with cte as(
         {{get_season('STARTED_AT')}}
 
     from 
-    {{ source('demo','bike')}}
+    {{ ref('stg_bike') }}
     where STARTED_AT!='started_at'
 )
 
